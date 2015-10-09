@@ -10,17 +10,51 @@ using System.Windows.Forms;
 
 namespace EpsomRacers
 {
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
-        public Form1()
+        bool MoveUp, MoveLeft = false;
+        Single LeftTurn = 0;
+        public frmMain()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) { 
+        
+            if (e.KeyCode == Keys.Up) {
+                MoveUp = true;
+            }
+
+            if (e.KeyCode == Keys.Left)
+            {
+                MoveLeft = true;
+            }
+        
+        
+        }
+
+        private void frmMain_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Up)
+            {
+                MoveUp = false;
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                MoveLeft = false;
+            }
 
+        }
 
+        private void gametick_Tick(object sender, EventArgs e)
+        {
+            if (MoveUp && MoveLeft)
+            {
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(LeftTurn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(LeftTurn)));
+                LeftTurn += 0.05f;
+            }
+
+            
         }
     }
 }
