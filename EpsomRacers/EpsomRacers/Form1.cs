@@ -12,8 +12,8 @@ namespace EpsomRacers
 {
     public partial class frmMain : Form
     {
-        bool MoveUp, MoveLeft = false;
-        Single LeftTurn = 0;
+        bool MoveUp, MoveLeft, MoveRight = false;
+        Single Turn = 0;
         public frmMain()
         {
             InitializeComponent();
@@ -29,6 +29,11 @@ namespace EpsomRacers
             {
                 MoveLeft = true;
             }
+
+            if (e.KeyCode == Keys.Right)
+            {
+                MoveRight = true;
+            }
         
         
         }
@@ -43,6 +48,11 @@ namespace EpsomRacers
             {
                 MoveLeft = false;
             }
+            if (e.KeyCode == Keys.Right)
+            {
+                MoveRight = false;
+            }
+        
 
         }
 
@@ -50,8 +60,17 @@ namespace EpsomRacers
         {
             if (MoveUp && MoveLeft)
             {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(LeftTurn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(LeftTurn)));
-                LeftTurn += 0.05f;
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(Turn)));
+                Turn += 0.05f;
+            }
+            else if (MoveUp && MoveRight)
+            {
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(Turn)));
+                Turn -= 0.05f;
+            }
+            else if (MoveUp)
+            {
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(Turn)));
             }
 
             
