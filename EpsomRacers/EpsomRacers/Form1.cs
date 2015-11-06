@@ -13,16 +13,23 @@ namespace EpsomRacers
     public partial class frmMain : Form
     {
         bool MoveUp, MoveLeft, MoveRight = false;
-        Single Turn = 0;
+        DateTime TimeKeyPressed;
+        Single Turn, TurningCircle, Radius = 0;
+        Single Velocity;
         public frmMain()
         {
             InitializeComponent();
+            TimeKeyPressed = DateTime.UtcNow;
+            TurningCircle = 0.05f;
+            Velocity = 5;
+            Radius = 65;
         }
 
         private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) { 
         
             if (e.KeyCode == Keys.Up) {
                 MoveUp = true;
+                TimeKeyPressed = DateTime.Now;
             }
 
             if (e.KeyCode == Keys.Left)
@@ -58,22 +65,36 @@ namespace EpsomRacers
 
         private void gametick_Tick(object sender, EventArgs e)
         {
+
+            //Does not work at the moment
             if (MoveUp && MoveLeft)
             {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(Turn)));
-                Turn += 0.05f;
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                TurningCircle = Velocity / Radius;
+                Turn += TurningCircle ;
             }
             else if (MoveUp && MoveRight)
             {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(Turn)));
-                Turn -= 0.05f;
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                TurningCircle = Velocity / Radius;
+                Turn -= TurningCircle ;
             }
             else if (MoveUp)
             {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - 5 * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - 5 * Math.Cos(Turn)));
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+            }
+
+            if (MoveUp)
+            {
+                Velocity += 0.1f;
             }
 
             
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
