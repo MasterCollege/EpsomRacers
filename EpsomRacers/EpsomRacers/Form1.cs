@@ -21,7 +21,7 @@ namespace EpsomRacers
             InitializeComponent();
             TimeKeyPressed = DateTime.UtcNow;
             TurningCircle = 0.05f;
-            Velocity = 5;
+            Velocity = 0;
             Radius = 65;
         }
 
@@ -84,11 +84,15 @@ namespace EpsomRacers
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
             }
 
-            if (MoveUp)
+            if (MoveUp && Velocity < 6f)
             {
                 Velocity += 0.1f;
             }
-
+           else if (MoveUp == false && Velocity > 0f)
+            {
+               Velocity -= 0.1f;
+               Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+            }
             
         }
 
