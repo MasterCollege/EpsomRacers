@@ -25,9 +25,11 @@ namespace EpsomRacers
             Radius = 65;
         }
 
-        private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) { 
-        
-            if (e.KeyCode == Keys.Up) {
+        private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Up)
+            {
                 MoveUp = true;
                 TimeKeyPressed = DateTime.Now;
             }
@@ -41,8 +43,8 @@ namespace EpsomRacers
             {
                 MoveRight = true;
             }
-        
-        
+
+
         }
 
         private void frmMain_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -59,7 +61,7 @@ namespace EpsomRacers
             {
                 MoveRight = false;
             }
-        
+
 
         }
 
@@ -67,38 +69,31 @@ namespace EpsomRacers
         {
 
             //Does not work at the moment
-            if (MoveUp && MoveLeft)
+            if (Velocity > 0f)
             {
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-                TurningCircle = Velocity / Radius;
-                Turn += TurningCircle ;
-            }
-            else if (MoveUp && MoveRight)
-            {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-                TurningCircle = Velocity / Radius;
-                Turn -= TurningCircle ;
-            }
-            else if (MoveUp)
-            {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-            }
+                if (MoveLeft)
+                {
+                    TurningCircle = Velocity / Radius;
+                    Turn += TurningCircle;
+                }
+                else if (MoveRight)
+                {
+                    TurningCircle = Velocity / Radius;
+                    Turn -= TurningCircle;
+                }
 
-            if (MoveUp && Velocity < 6f)
+            }
+            if (MoveUp && Velocity < 10f)
             {
                 Velocity += 0.1f;
             }
-           else if (MoveUp == false && Velocity > 0f)
+            else if (MoveUp == false && Velocity > 0f)
             {
-               Velocity -= 0.1f;
-               Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                Velocity -= 0.2f;
             }
-            
-        }
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
 
         }
+
     }
 }
