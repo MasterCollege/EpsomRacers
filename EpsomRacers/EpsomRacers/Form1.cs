@@ -12,7 +12,12 @@ namespace EpsomRacers
 {
     public partial class frmMain : Form
     {
-        bool MoveUp, MoveLeft, MoveRight = false;
+        bool MoveUp, MoveLeft, MoveRight, MoveDown = false;
+        //Put these all as one line if you want but i prefer them on their own lines
+        const Single Acceleration = 0.1f;
+        const Single Deceleration = 0.25f; //Used for natural deceleration without break (Assuming we will have a break)
+        const Single MaxVel = 5f;
+        const Single MinVel = -2f;
         DateTime TimeKeyPressed;
         Single Turn, TurningCircle, Radius = 0;
         Single Velocity;
@@ -27,78 +32,123 @@ namespace EpsomRacers
 
         private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) { 
         
-            if (e.KeyCode == Keys.Up) {
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W ) {
                 MoveUp = true;
                 TimeKeyPressed = DateTime.Now;
             }
 
-            if (e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
             {
                 MoveLeft = true;
             }
 
-            if (e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
                 MoveRight = true;
             }
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            {
+                MoveDown = true;
+            }
+            if (e.KeyCode == Keys.Escape)
+            {
+                System.Windows.Forms.Application.Exit();
+            }
+           
         
         
         }
 
         private void frmMain_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W)
             {
                 MoveUp = false;
             }
-            if (e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
             {
                 MoveLeft = false;
             }
-            if (e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
                 MoveRight = false;
             }
-        
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            {
+                MoveDown = false;
+            }
 
         }
 
         private void gametick_Tick(object sender, EventArgs e)
         {
 
-            //Does not work at the moment
-            if (MoveUp && MoveLeft)
-            {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-                TurningCircle = Velocity / Radius;
-                Turn += TurningCircle ;
+            //Foward
+            if (Velocity > 0 && MoveUp ) {
+                if (MoveLeft)
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                    TurningCircle = Velocity / Radius;
+                    Turn += TurningCircle ;
+                }
+                else if ( MoveRight)
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                    TurningCircle = Velocity / Radius;
+                    Turn -= TurningCircle ;
+                }
+                else
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                }
             }
-            else if (MoveUp && MoveRight)
-            {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-                TurningCircle = Velocity / Radius;
-                Turn -= TurningCircle ;
-            }
-            else if (MoveUp)
-            {
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+            //Reverse
+            if (Velocity < 0 && MoveDown ) {
+                if (MoveLeft)
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                    TurningCircle = Velocity / Radius;
+                    Turn -= TurningCircle;
+                }
+                else if (MoveRight)
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                    TurningCircle = Velocity / Radius;
+                    Turn += TurningCircle;
+                }
+                else
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                }
             }
 
-            if (MoveUp && Velocity < 6f)
+            //Velocity Limiter & acceleration for moving forward
+            if (MoveUp && Velocity < MaxVel)
             {
-                Velocity += 0.1f;
+                Velocity += Acceleration;
             }
            else if (MoveUp == false && Velocity > 0f)
             {
-               Velocity -= 0.1f;
+                Velocity -= Deceleration;
                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
             }
-            
+
+            //Velocity Limiter & acceleration for moving Backwards
+            if (MoveDown && Velocity > MinVel && Velocity < 0)
+            {
+                Velocity -= Acceleration;
+            }
+            else if (MoveDown == false && Velocity < 0)
+            {
+                Velocity += Deceleration;
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-
+            //this.TopMost = true; (Do we want people tabbing out?)
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
     }
 }
