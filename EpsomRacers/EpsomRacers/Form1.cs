@@ -12,9 +12,16 @@ namespace EpsomRacers
 {
     public partial class frmMain : Form
     {
-        bool MoveUp, MoveLeft, MoveRight = false;
+        bool MoveUp, MoveLeft, MoveRight, MoveDown = false;
         DateTime TimeKeyPressed;
         Single Turn, TurningCircle, Radius = 0;
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            //Interface setup
+            this.WindowState = FormWindowState.Maximized;
+        }
+
         Single Velocity;
         public frmMain()
         {
@@ -28,38 +35,48 @@ namespace EpsomRacers
         private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
 
-            if (e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W)
             {
                 MoveUp = true;
                 TimeKeyPressed = DateTime.Now;
             }
 
-            if (e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
             {
                 MoveLeft = true;
             }
 
-            if (e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
                 MoveRight = true;
             }
+
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            {
+                MoveDown = true;
+            }
+
 
 
         }
 
         private void frmMain_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W)
             {
                 MoveUp = false;
             }
-            if (e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
             {
                 MoveLeft = false;
             }
-            if (e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
                 MoveRight = false;
+            }
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            {
+                MoveDown = false;
             }
 
 
@@ -68,8 +85,7 @@ namespace EpsomRacers
         private void gametick_Tick(object sender, EventArgs e)
         {
 
-            //Does not work at the moment
-            if (Velocity > 0f)
+            if (Velocity != 0f)
             {
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
                 if (MoveLeft)
@@ -87,11 +103,38 @@ namespace EpsomRacers
             if (MoveUp && Velocity < 10f)
             {
                 Velocity += 0.1f;
-            }
+                            }
             else if (MoveUp == false && Velocity > 0f)
             {
-                Velocity -= 0.2f;
+                if (MoveDown)
+                {
+                    Velocity -= 0.5f;
+                }
+                else
+                {
+                    Velocity -= 0.2f;
+                }
             }
+            if (MoveDown && Velocity > -10f)
+            {
+                Velocity -= 0.1f;
+            }
+            else if (MoveDown == false && Velocity < 0f)
+            {
+                if(MoveUp)
+                {
+                    Velocity += 0.5f;
+                }
+                else
+                {
+                    Velocity += 0.2f;
+                }
+            }
+
+
+
+
+
 
         }
 
