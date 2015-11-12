@@ -18,10 +18,10 @@ namespace EpsomRacers
         const Single Acceleration = 0.1f;
         const Single Deceleration = 0.25f; //Used for natural deceleration without break (Assuming we will have a break)
         const Single Brake = 0.5f;
-        const Single MaxVel = 15f;
+        const Single MaxVel = 20f;
         const Single MinVel = -10f;
         DateTime TimeKeyPressed;
-        Single Turn, TurningCircle, Radius = 0;
+        Single Turn, TurningCircle, Radius, TempTurn = 0;
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -71,6 +71,15 @@ namespace EpsomRacers
             {
                 System.Windows.Forms.Application.Exit();
             }
+
+            if (e.KeyCode == Keys.Space)
+            {
+                Drifting = true;
+                this.BackColor = Color.Cyan;
+                
+                //Part of drifting solution Two
+                //TempTurn = Turn;
+            }
             
         }
 
@@ -92,6 +101,11 @@ namespace EpsomRacers
             {
                 MoveDown = false;
             }
+            if (e.KeyCode == Keys.Space)
+            {
+                Drifting = false;
+                this.BackColor = Color.White;
+            }
             
 
         }
@@ -99,10 +113,46 @@ namespace EpsomRacers
         private void gametick_Tick(object sender, EventArgs e)
         {
 
+            //Two possible drifting mechanics (back colour changes for indication)
+            //1. Sharper turn
+            //2. Prevent car from turning temporarily while the space key is held down
+            //   Variable 'Turn' will still update but won't have any effect until the 
+            //   space key is released. (See Key_Down)
+
+
+
+
+            //Solution One
+
+            //if (Drifting)
+            //{
+            //    Radius = 65;
+            //}
+            //else
+            //{
+            //    Radius = 100;
+            //}
+
             //Update location as long as the vehicle is moving
             if (Velocity != 0f)
             {
+
+                //Solution Two
+
+                //if (Drifting)
+                //{
+                //    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(TempTurn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(TempTurn)));
+
+                //}
+                //else
+                //{
+                //    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                //}
+                
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+
+
+
                 if (MoveLeft)
                 {
                     TurningCircle = Velocity / Radius;

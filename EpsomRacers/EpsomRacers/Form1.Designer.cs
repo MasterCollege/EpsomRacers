@@ -39,14 +39,14 @@
             this.Car.BackColor = System.Drawing.Color.Red;
             this.Car.Location = new System.Drawing.Point(275, 248);
             this.Car.Name = "Car";
-            this.Car.Size = new System.Drawing.Size(44, 67);
+            this.Car.Size = new System.Drawing.Size(45, 70);
             this.Car.TabIndex = 0;
             this.Car.TabStop = false;
             // 
             // gametick
             // 
             this.gametick.Enabled = true;
-            this.gametick.Interval = 1;
+            this.gametick.Interval = 17;
             this.gametick.Tick += new System.EventHandler(this.gametick_Tick);
             // 
             // frmMain
