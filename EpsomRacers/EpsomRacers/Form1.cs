@@ -12,12 +12,12 @@ namespace EpsomRacers
 {
     public partial class frmMain : Form
     {
-        bool MoveUp, MoveLeft, MoveRight, MoveDown = false;
+        bool MoveUp, MoveLeft, MoveRight, MoveDown, Drifting = false;
 
         //Put these all as one line if you want but i prefer them on their own lines
         const Single Acceleration = 0.1f;
         const Single Deceleration = 0.25f; //Used for natural deceleration without break (Assuming we will have a break)
-        const Single MaxVel = 20f;
+        const Single MaxVel = 15f;
         const Single MinVel = -10f;
         DateTime TimeKeyPressed;
         Single Turn, TurningCircle, Radius = 0;
@@ -34,10 +34,13 @@ namespace EpsomRacers
         public frmMain()
         {
             InitializeComponent();
+            //Not sure what TimeKeyPressed is for...
             TimeKeyPressed = DateTime.UtcNow;
+            
+            //Should radius be a constant or a variable that changes when, for example, drifting?
             TurningCircle = 0.05f;
             Velocity = 0;
-            Radius = 65;
+            Radius = 100;
         }
 
 
@@ -67,7 +70,7 @@ namespace EpsomRacers
             {
                 System.Windows.Forms.Application.Exit();
             }
-
+            
         }
 
         private void frmMain_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -88,13 +91,14 @@ namespace EpsomRacers
             {
                 MoveDown = false;
             }
-
+            
 
         }
 
         private void gametick_Tick(object sender, EventArgs e)
         {
 
+            //Update location as long as the vehicle is moving
             if (Velocity != 0f)
             {
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
@@ -110,31 +114,37 @@ namespace EpsomRacers
                 }
 
             }
+            //Forward acceleration
             if (MoveUp && Velocity < MaxVel)
             {
                 Velocity += Acceleration;
             }
             else if (MoveUp == false && Velocity > 0f)
             {
+                //If brakes are applied (Opposite direction key)
                 if (MoveDown)
                 {
                     Velocity -= 0.5f;
                 }
+                //Or else natural deceleration
                 else
                 {
                     Velocity -= Deceleration;
                 }
             }
+            //Backward acceleration
             if (MoveDown && Velocity > MinVel)
             {
                 Velocity -= Acceleration ;
             }
             else if (MoveDown == false && Velocity < 0f)
             {
+                //If brakes are applied (Opposite direction key)
                 if (MoveUp)
                 {
                     Velocity += 0.5f;
                 }
+                //Or else natural deceleration
                 else
                 {
                     Velocity += Deceleration;
