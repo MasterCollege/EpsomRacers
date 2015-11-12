@@ -17,6 +17,7 @@ namespace EpsomRacers
         //Put these all as one line if you want but i prefer them on their own lines
         const Single Acceleration = 0.1f;
         const Single Deceleration = 0.25f; //Used for natural deceleration without break (Assuming we will have a break)
+        const Single Brake = 0.5f;
         const Single MaxVel = 15f;
         const Single MinVel = -10f;
         DateTime TimeKeyPressed;
@@ -124,7 +125,7 @@ namespace EpsomRacers
                 //If brakes are applied (Opposite direction key)
                 if (MoveDown)
                 {
-                    Velocity -= 0.5f;
+                    Velocity -= Brake;
                 }
                 //Or else natural deceleration
                 else
@@ -142,7 +143,7 @@ namespace EpsomRacers
                 //If brakes are applied (Opposite direction key)
                 if (MoveUp)
                 {
-                    Velocity += 0.5f;
+                    Velocity += Brake;
                 }
                 //Or else natural deceleration
                 else
