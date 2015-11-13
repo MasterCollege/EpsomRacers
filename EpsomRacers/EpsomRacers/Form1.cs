@@ -18,7 +18,7 @@ namespace EpsomRacers
         const Single Acceleration = 0.1f;
         const Single Deceleration = 0.25f; //Used for natural deceleration without break (Assuming we will have a break)
         const Single Brake = 0.5f;
-        const Single MaxVel = 20f;
+        const Single MaxVel = 15f;
         const Single MinVel = -10f;
         DateTime TimeKeyPressed;
         Single Turn, TurningCircle, Radius, TempTurn = 0;
@@ -42,8 +42,13 @@ namespace EpsomRacers
             TurningCircle = 0.05f;
             Velocity = 0;
             Radius = 100;
+            Car.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbBound.Top = 160;
+            pbBound.Left = 160;
+            pbBound.Width = Screen.FromControl(this).Bounds.Width - 320;
+            pbBound.Height = Screen.FromControl(this).Bounds.Height - 320;
+            Car.BringToFront();
         }
-
 
         private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
@@ -78,7 +83,7 @@ namespace EpsomRacers
                 this.BackColor = Color.Cyan;
                 
                 //Part of drifting solution Two
-                //TempTurn = Turn;
+                TempTurn = Turn;
             }
             
         }
@@ -110,6 +115,8 @@ namespace EpsomRacers
 
         }
 
+
+
         private void gametick_Tick(object sender, EventArgs e)
         {
 
@@ -124,14 +131,15 @@ namespace EpsomRacers
 
             //Solution One
 
-            //if (Drifting)
-            //{
-            //    Radius = 65;
-            //}
-            //else
-            //{
-            //    Radius = 100;
-            //}
+            if (Drifting)
+            {
+                Radius = 65;
+            }
+            else
+            {
+                Radius = 100;
+            }
+
 
             //Update location as long as the vehicle is moving
             if (Velocity != 0f)
@@ -148,10 +156,9 @@ namespace EpsomRacers
                 //{
                 //    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
                 //}
-                
+
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-
-
+           
 
                 if (MoveLeft)
                 {
@@ -163,6 +170,7 @@ namespace EpsomRacers
                     TurningCircle = Velocity / Radius;
                     Turn -= TurningCircle;
                 }
+
 
             }
             //Forward acceleration
