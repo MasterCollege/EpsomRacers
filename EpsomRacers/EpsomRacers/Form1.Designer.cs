@@ -39,7 +39,7 @@
             // 
             // Car
             // 
-            this.Car.BackColor = System.Drawing.Color.Firebrick;
+            this.Car.BackColor = System.Drawing.Color.SaddleBrown;
             this.Car.Location = new System.Drawing.Point(275, 248);
             this.Car.Name = "Car";
             this.Car.Size = new System.Drawing.Size(40, 80);

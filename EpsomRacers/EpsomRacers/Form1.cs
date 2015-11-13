@@ -42,12 +42,22 @@ namespace EpsomRacers
             TurningCircle = 0.05f;
             Velocity = 0;
             Radius = 100;
-            Car.SizeMode = PictureBoxSizeMode.StretchImage;
+            Car.SizeMode = PictureBoxSizeMode.Normal;
             pbBound.Top = 160;
             pbBound.Left = 160;
             pbBound.Width = Screen.FromControl(this).Bounds.Width - 320;
             pbBound.Height = Screen.FromControl(this).Bounds.Height - 320;
             Car.BringToFront();
+            Car.Image = new Bitmap(Car.Width, Car.Height);
+            using (Graphics g = Graphics. FromImage(Car.Image))
+            {
+                g.TranslateTransform(Car.Width /2,Car.Height/2);
+                g.RotateTransform(50);
+                g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
+                g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+
+            }
+            
         }
 
         private void frmMain_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -131,14 +141,14 @@ namespace EpsomRacers
 
             //Solution One
 
-            if (Drifting)
-            {
-                Radius = 65;
-            }
-            else
-            {
-                Radius = 100;
-            }
+            //if (Drifting)
+            //{
+            //    Radius = 65;
+            //}
+            //else
+            //{
+            //    Radius = 100;
+            //}
 
 
             //Update location as long as the vehicle is moving
@@ -147,28 +157,49 @@ namespace EpsomRacers
 
                 //Solution Two
 
-                //if (Drifting)
-                //{
-                //    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(TempTurn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(TempTurn)));
+                if (Drifting)
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(TempTurn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(TempTurn)));
 
-                //}
-                //else
-                //{
-                //    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-                //}
+                }
+                else
+                {
+                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                }
 
-                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                //Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
            
 
                 if (MoveLeft)
                 {
                     TurningCircle = Velocity / Radius;
                     Turn += TurningCircle;
+                    Car.Image = new Bitmap(Car.Width, Car.Height);
+                    using (Graphics g = Graphics.FromImage(Car.Image))
+                    {
+                        g.Clear(this.BackColor);
+                        g.TranslateTransform(Car.Width / 2, Car.Height / 2);
+                        g.RotateTransform(Turn);
+                        g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
+                        g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+
+                    }
+                    
                 }
                 else if (MoveRight)
                 {
                     TurningCircle = Velocity / Radius;
                     Turn -= TurningCircle;
+                    Car.Image = new Bitmap(Car.Width, Car.Height);
+                    using (Graphics g = Graphics.FromImage(Car.Image))
+                    {
+                        g.Clear(this.BackColor);
+                        g.TranslateTransform(Car.Width / 2, Car.Height / 2);
+                        g.RotateTransform(Turn);
+                        g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
+                        g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+
+                    }
                 }
 
 
