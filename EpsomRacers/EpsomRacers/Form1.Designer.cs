@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.Car = new System.Windows.Forms.PictureBox();
             this.gametick = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Car)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,11 +51,21 @@
             this.gametick.Interval = 17;
             this.gametick.Tick += new System.EventHandler(this.gametick_Tick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(545, 209);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "label1";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(627, 369);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.Car);
             this.KeyPreview = true;
             this.Name = "frmMain";
@@ -64,6 +75,7 @@
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.Car)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -71,6 +83,7 @@
 
         private System.Windows.Forms.PictureBox Car;
         private System.Windows.Forms.Timer gametick;
+        private System.Windows.Forms.Label label1;
 
     }
 }

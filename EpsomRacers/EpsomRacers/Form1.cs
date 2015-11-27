@@ -98,17 +98,14 @@ namespace EpsomRacers
 
         private void gametick_Tick(object sender, EventArgs e)
         {
-                     
+            //label1.Text = Turn.ToString() + " " + Velocity.ToString();         
 
             //Update location as long as the vehicle is moving
-            if (Velocity != 0f)
+            if (Math.Abs(Velocity) >= 0.05f)
             {
-
-                
-
+                                
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
            
-
                 if (MoveLeft)
                 {
                     TurningCircle = Velocity / Radius;
@@ -118,11 +115,11 @@ namespace EpsomRacers
                     {
                         g.Clear(this.BackColor);
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
-                        float x = (-1 * Turn) * (55);
+                        float x = (-1 * Turn) * 55; 
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
-
+                        label1.Text = x.ToString();
                     }
                     
                 }
@@ -135,15 +132,19 @@ namespace EpsomRacers
                     {
                         g.Clear(this.BackColor);
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
-                        float x = (-1 * Turn) * (55);
+                        float x = (-1 * Turn) * 55;
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
-
+                        label1.Text = x.ToString();
                     }
                 }
-
-
+                
+                if (Math.Abs(Turn) >= (2 * Math.PI))
+                {
+                    Turn = 0;
+                }
+                
             }
             //Forward acceleration
             if (MoveUp && Velocity < MaxVel)
@@ -183,6 +184,7 @@ namespace EpsomRacers
             }
 
         }
+     
 
     }
 }
