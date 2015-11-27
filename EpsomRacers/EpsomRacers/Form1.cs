@@ -115,10 +115,11 @@ namespace EpsomRacers
                     {
                         g.Clear(this.BackColor);
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
-                        float x = (-1 * Turn) * 55; 
+                        float x = (-1 * Turn) * 55; //((float)Math.PI / 180)
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
-                        g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+                        //g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+                        g.DrawImage(Image.FromFile(@"R8.png"), 0, 0, 40, 80);
                         label1.Text = x.ToString();
                     }
                     
@@ -132,10 +133,11 @@ namespace EpsomRacers
                     {
                         g.Clear(this.BackColor);
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
-                        float x = (-1 * Turn) * 55;
+                        float x = (-1 * Turn) * 55; //((float)Math.PI / 180)
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
-                        g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+                        //g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+                        g.DrawImage(Image.FromFile(@"R8.png"), 0, 0, 40, 80);
                         label1.Text = x.ToString();
                     }
                 }
