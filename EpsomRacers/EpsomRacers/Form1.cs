@@ -12,7 +12,7 @@ namespace EpsomRacers
 {
     public partial class frmMain : Form
     {
-        bool MoveUp, MoveLeft, MoveRight, MoveDown, Drifting = false;
+        bool MoveUp, MoveLeft, MoveRight, MoveDown = false;
 
         //Put these all as one line if you want but i prefer them on their own lines
         const Single Acceleration = 0.1f;
@@ -20,8 +20,7 @@ namespace EpsomRacers
         const Single Brake = 0.5f;
         const Single MaxVel = 15f;
         const Single MinVel = -10f;
-        DateTime TimeKeyPressed;
-        Single Turn, TurningCircle, Radius, TempTurn = 0;
+        Single Turn, TurningCircle, Radius = 0;
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -34,29 +33,13 @@ namespace EpsomRacers
         Single Velocity;
         public frmMain()
         {
-            InitializeComponent();
-            //Not sure what TimeKeyPressed is for...
-            TimeKeyPressed = DateTime.UtcNow;
-            
+            InitializeComponent();            
             //Should radius be a constant or a variable that changes when, for example, drifting?
             TurningCircle = 0.05f;
             Velocity = 0;
             Radius = 100;
-            Car.SizeMode = PictureBoxSizeMode.Normal;
-            pbBound.Top = 160;
-            pbBound.Left = 160;
-            pbBound.Width = Screen.FromControl(this).Bounds.Width - 320;
-            pbBound.Height = Screen.FromControl(this).Bounds.Height - 320;
-            Car.BringToFront();
             Car.Image = new Bitmap(Car.Width, Car.Height);
-            using (Graphics g = Graphics. FromImage(Car.Image))
-            {
-                g.TranslateTransform(Car.Width /2,Car.Height/2);
-                g.RotateTransform(50);
-                g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
-                g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
-
-            }
+            
             
         }
 
@@ -64,7 +47,6 @@ namespace EpsomRacers
         {
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W ) {
                 MoveUp = true;
-                TimeKeyPressed = DateTime.Now;
             }
 
             if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
@@ -86,15 +68,7 @@ namespace EpsomRacers
             {
                 System.Windows.Forms.Application.Exit();
             }
-
-            if (e.KeyCode == Keys.Space)
-            {
-                Drifting = true;
-                this.BackColor = Color.Cyan;
-                
-                //Part of drifting solution Two
-                TempTurn = Turn;
-            }
+            
             
         }
 
@@ -116,11 +90,6 @@ namespace EpsomRacers
             {
                 MoveDown = false;
             }
-            if (e.KeyCode == Keys.Space)
-            {
-                Drifting = false;
-                this.BackColor = Color.White;
-            }
             
 
         }
@@ -129,45 +98,15 @@ namespace EpsomRacers
 
         private void gametick_Tick(object sender, EventArgs e)
         {
-
-            //Two possible drifting mechanics (back colour changes for indication)
-            //1. Sharper turn
-            //2. Prevent car from turning temporarily while the space key is held down
-            //   Variable 'Turn' will still update but won't have any effect until the 
-            //   space key is released. (See Key_Down)
-
-
-
-
-            //Solution One
-
-            //if (Drifting)
-            //{
-            //    Radius = 65;
-            //}
-            //else
-            //{
-            //    Radius = 100;
-            //}
-
+                     
 
             //Update location as long as the vehicle is moving
             if (Velocity != 0f)
             {
 
-                //Solution Two
+                
 
-                if (Drifting)
-                {
-                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(TempTurn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(TempTurn)));
-
-                }
-                else
-                {
-                    Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-                }
-
-                //Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
+                Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
            
 
                 if (MoveLeft)
@@ -179,7 +118,8 @@ namespace EpsomRacers
                     {
                         g.Clear(this.BackColor);
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
-                        g.RotateTransform(Turn);
+                        float x = (-1 * Turn) * (55);
+                        g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
 
@@ -195,7 +135,8 @@ namespace EpsomRacers
                     {
                         g.Clear(this.BackColor);
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
-                        g.RotateTransform(Turn);
+                        float x = (-1 * Turn) * (55);
+                        g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
 
