@@ -20,6 +20,7 @@ namespace EpsomRacers
         const Single Brake = 0.5f;
         const Single MaxVel = 15f;
         const Single MinVel = -10f;
+        const Single StationVel = 0.5f;
         Single Turn, TurningCircle, Radius = 0;
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -99,7 +100,7 @@ namespace EpsomRacers
         private void gametick_Tick(object sender, EventArgs e)
         {
             //Update location as long as the vehicle is moving
-            if (Math.Abs(Velocity) >= 0.05f)
+            if (Math.Abs(Velocity) >= StationVel)
             {
                                 
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
