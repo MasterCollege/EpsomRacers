@@ -18,9 +18,10 @@ namespace EpsomRacers
         const Single Acceleration = 0.5f;
         const Single Deceleration = 0.1f; //Used for natural deceleration
         const Single Brake = 0.5f;
-        const Single MaxVel = 150f;
+        const Single MaxVel = 15f;
         const Single MinVel = -5f;
         const Single StationVel = 0.5f;
+ 
         Image CarImg = new Bitmap(Image.FromFile(@"R8.png"));
         Single Turn, TurningCircle, Radius = 0;
 
@@ -29,7 +30,9 @@ namespace EpsomRacers
             //Interface setup
             //this.TopMost = true; (Do we want people tabbing out?)
             this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
+            Car.BackColor = Color.Transparent;
+            Car.Parent = pictureBox1; 
         }
 
         Single Velocity;
@@ -103,9 +106,9 @@ namespace EpsomRacers
             //Update location as long as the vehicle is moving
             if (Math.Abs(Velocity) >= StationVel)
             {
-                                
+
+                pictureBox1.Location = new Point(Convert.ToInt32(pictureBox1.Location.X + Velocity * Math.Sin(Turn)), Convert.ToInt32(pictureBox1.Location.Y + Velocity * Math.Cos(Turn)));
                 Car.Location = new Point(Convert.ToInt32(Car.Location.X - Velocity * Math.Sin(Turn)), Convert.ToInt32(Car.Location.Y - Velocity * Math.Cos(Turn)));
-           
                 if (MoveLeft)
                 {
                     TurningCircle = Velocity / Radius;
@@ -118,7 +121,7 @@ namespace EpsomRacers
                         float x = (-1 * Turn) * (360 / (2 * (float)Math.PI));
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
-                        //g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                         g.DrawImage(CarImg , Car.Height/4, 0, Car.Height / 2, Car.Height);
                         g.Dispose();
                     }
@@ -132,12 +135,14 @@ namespace EpsomRacers
                     using (Graphics g = Graphics.FromImage(Car.Image))
                     {
                         g.Clear(this.BackColor);
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                         g.TranslateTransform(Car.Width / 2, Car.Height / 2);
                         float x = (-1 * Turn) * (360 / ( 2 * (float)Math.PI));
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         //g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
                         g.DrawImage(CarImg, Car.Height/4, 0, Car.Height / 2, Car.Height);
+                        
                         g.Dispose();
                     }
                 }
@@ -186,7 +191,6 @@ namespace EpsomRacers
             }
 
         }
-     
 
     }
 }
