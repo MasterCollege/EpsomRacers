@@ -15,12 +15,13 @@ namespace EpsomRacers
         bool MoveUp, MoveLeft, MoveRight, MoveDown = false;
 
         //Put these all as one line if you want but i prefer them on their own lines
-        const Single Acceleration = 0.1f;
-        const Single Deceleration = 0.25f; //Used for natural deceleration without break (Assuming we will have a break)
+        const Single Acceleration = 0.5f;
+        const Single Deceleration = 0.1f; //Used for natural deceleration
         const Single Brake = 0.5f;
-        const Single MaxVel = 15f;
-        const Single MinVel = -10f;
+        const Single MaxVel = 150f;
+        const Single MinVel = -5f;
         const Single StationVel = 0.5f;
+        Image CarImg = new Bitmap(Image.FromFile(@"R8.png"));
         Single Turn, TurningCircle, Radius = 0;
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -118,7 +119,8 @@ namespace EpsomRacers
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         //g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
-                        g.DrawImage(Image.FromFile(@"R8.png"), Car.Height/4, 0, Car.Height / 2, Car.Height);
+                        g.DrawImage(CarImg , Car.Height/4, 0, Car.Height / 2, Car.Height);
+                        g.Dispose();
                     }
                     
                 }
@@ -135,7 +137,8 @@ namespace EpsomRacers
                         g.RotateTransform(x);
                         g.TranslateTransform(-Car.Width / 2, -Car.Height / 2);
                         //g.FillRectangle(Brushes.Red, 0, 0, Car.Width, Car.Height);
-                        g.DrawImage(Image.FromFile(@"R8.png"), Car.Height/4, 0, Car.Height / 2, Car.Height);
+                        g.DrawImage(CarImg, Car.Height/4, 0, Car.Height / 2, Car.Height);
+                        g.Dispose();
                     }
                 }
                 
